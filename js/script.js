@@ -1876,6 +1876,13 @@ class Shell {
 	 * @param {number} launchHeight 爆炸所在高度
 	 */
 	launch(position, launchHeight) {
+		if (!window.__fireworksGreetingShown) {
+			window.__fireworksGreetingShown = true;
+			if (typeof window.__fireworksShowGreeting === "function") {
+				window.__fireworksShowGreeting();
+			}
+		}
+
 		const width = stageW;
 		const height = stageH;
 		//与屏幕两侧保持外壳的距离。

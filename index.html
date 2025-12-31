@@ -14,6 +14,31 @@
 		<meta name="msapplication-TileImage" content="./images/favicon.png" />
 		<link href="./fonts/css.css" rel="stylesheet" />
 		<link rel="stylesheet" href="./css/style.css" />
+		<style>
+			.firework-greeting {
+				position: absolute;
+				left: 50%;
+				top: 14%;
+				transform: translate(-50%, -6px);
+				max-width: min(92vw, 1100px);
+				padding: 10px 14px;
+				text-align: center;
+				letter-spacing: 0.02em;
+				font-family: "华文琥珀", "KaiTi", "STKaiti", "Songti SC", "SimSun", "Microsoft YaHei", serif;
+				font-size: clamp(18px, 3.2vw, 40px);
+				line-height: 1.25;
+				color: rgba(255, 255, 255, 0.92);
+				text-shadow: 0 2px 14px rgba(0, 0, 0, 0.85);
+				pointer-events: none;
+				opacity: 0;
+				transition: opacity 500ms ease, transform 500ms ease;
+				z-index: 20;
+			}
+			.firework-greeting.is-visible {
+				opacity: 1;
+				transform: translate(-50%, 0);
+			}
+		</style>
 	</head>
 	<body>
 		<!-- partial:index.partial.html -->
@@ -47,6 +72,9 @@
 				<div class="loading-init__status">正在装配烟花</div>
 			</div>
 			<div class="stage-container remove">
+				<div id="firework-greeting" class="firework-greeting" aria-hidden="true">
+					那我也用我的方式把我们聊天窗的烟花送到你身边
+				</div>
 				<div class="canvas-container">
 					<canvas id="trails-canvas"> </canvas>
 					<canvas id="main-canvas"> </canvas>
@@ -148,6 +176,20 @@
 		<script src="./js/fscreen.js"></script>
 		<script src="./js/Stage.js"></script>
 		<script src="./js/MyMath.js"></script>
+		<script>
+			// Exposed hook for js/script.js to call once fireworks launch.
+			window.__fireworksShowGreeting = function () {
+				var el = document.getElementById("firework-greeting");
+				if (!el) return;
+				if (el.classList.contains("is-visible")) return;
+				el.classList.add("is-visible");
+				el.setAttribute("aria-hidden", "false");
+				window.setTimeout(function () {
+					el.classList.remove("is-visible");
+					el.setAttribute("aria-hidden", "true");
+				}, 6500);
+			};
+		</script>
 		<script src="./js/script.js"></script>
 	</body>
 </html>
